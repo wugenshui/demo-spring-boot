@@ -16,7 +16,7 @@
     <properties>
         <java.version>1.8</java.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <mysql.version>8.0.19</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <p6spy.version>3.8.1</p6spy.version>
         <swagger.version>3.0.0</swagger.version>
         <minio.version>7.1.4</minio.version>
