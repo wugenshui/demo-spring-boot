@@ -22,10 +22,10 @@ public class App {
 
         EchoClient echoClient = context.getBean(EchoClient.class);
         EchoDTO echo = echoClient.echo("123");
-        System.out.println("echo = " + echo);
+        System.out.println(echo);
 
         ServerClient serverClient = context.getBean(ServerClient.class);
         String loginResult = serverClient.login();
-        System.out.println("loginResult = " + loginResult);
+        System.out.println(loginResult);
     }
 }
