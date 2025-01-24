@@ -6,6 +6,8 @@ import demo.open.feign.dto.EchoDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -27,5 +29,6 @@ public class App {
         ServerClient serverClient = context.getBean(ServerClient.class);
         String loginResult = serverClient.login();
         System.out.println(loginResult);
+
     }
 }

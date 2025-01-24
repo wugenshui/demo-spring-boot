@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author : chenbo
  * @date : 2025-01-07
  */
-@FeignClient(value="ai.h.com", url="http://192.168.0.77:801")
+@FeignClient(value="ai.h.com")
 public interface ServerClient {
 
     /**
