@@ -11,7 +11,8 @@ import org.flowable.engine.RepositoryService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.Map;
 
 /**
  * @author : chenbo
- * @date : 2024-12-08
+ * @date : 2025-02-11
  */
-@Component
-public class QingJiaTest {
+@SpringBootTest
+class QingjiaTest {
     @Resource
     private ProcessEngineConfiguration processEngineConfiguration;
     @Resource
@@ -32,7 +33,9 @@ public class QingJiaTest {
     @Resource
     private HistoryService historyService;
 
-    public void run() {
+    // 普通流程完成
+    @Test
+    void qingjia() {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         // 部署
         Deployment deployment = repositoryService.createDeployment()
@@ -56,6 +59,19 @@ public class QingJiaTest {
         String approveType = propertie.getAttributeValue(propertie.getNamespace(), "approveType");
         // 能获取到模型XML中的值，但过于复杂
         String type = propertie.getChildElements().get("property").get(0).getAttributes().get("value").get(0).getValue();
-        System.out.println("type = " + type);
+        System.out.println("approveType = " + type);
+        // 封装读取值的办法
+        System.out.println("getPropertyValue(approveType) = " + getPropertyValue(propertie, "approveType"));
+        System.out.println("getPropertyValue(age) = " + getPropertyValue(propertie, "age"));
     }
+
+    // 工具方法：根据属性名获取对应的值
+    public String getPropertyValue(ExtensionElement propertiesElement, String propertyName) {
+        return propertiesElement.getChildElements().get("property").stream()
+                .filter(e -> propertyName.equals(e.getAttributes().get("name").get(0).getValue()))
+                .findFirst()
+                .map(e -> e.getAttributes().get("value").get(0).getValue())
+                .orElse(null); // 或抛出异常/返回默认值
+    }
+
 }
