@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @date : 2025-02-11
  */
 @SpringBootTest
-class NormalTest {
+class RedoTest {
     @Resource
     private ProcessEngineConfiguration processEngineConfiguration;
     @Resource
@@ -38,7 +38,7 @@ class NormalTest {
 
     // 普通流程完成 [Approve or reject request] -> [Holiday approved]
     @Test
-    void normalFlow() {
+    void redo() {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         // 部署
         Deployment deployment = repositoryService.createDeployment()
@@ -70,15 +70,14 @@ class NormalTest {
         variables = new HashMap<>();
         variables.put("approved", true);
         taskService.complete(task.getId(), variables);
+        System.out.printf("--> 完成任务：%s \n", tasks.get(0).getName());
 
-        for (int i = 0; i < 5; i++) {
-            tasks = printCurrentTask();
-            if (!tasks.isEmpty()) {
-                taskService.complete(tasks.get(0).getId());
-            } else {
-                break;
-            }
-        }
+
+
+        tasks = printCurrentTask();
+        taskService.complete(tasks.get(0).getId());
+        System.out.printf("--> 完成任务：%s \n", tasks.get(0).getName());
+
 
         // 查询历史
         List<HistoricTaskInstance> history = historyService.createHistoricTaskInstanceQuery().processInstanceId(task.getProcessInstanceId()).list();
