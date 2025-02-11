@@ -63,24 +63,20 @@ class RedoTest {
         // 查询任务
         List<Task> tasks = printCurrentTask();
 
-        // 完成任务
-        Task task = tasks.get(0);
-        Map<String, Object> processVariables = taskService.getVariables(task.getId());
-        System.out.printf("申请内容：用户[%s]想要[%s]天假期 \n", processVariables.get("employee"), processVariables.get("nrOfHolidays"));
         variables = new HashMap<>();
         variables.put("approved", true);
-        taskService.complete(task.getId(), variables);
+        // 完成任务
+        taskService.complete(tasks.get(0).getId(), variables);
         System.out.printf("--> 完成任务：%s \n", tasks.get(0).getName());
-
-
 
         tasks = printCurrentTask();
-        taskService.complete(tasks.get(0).getId());
-        System.out.printf("--> 完成任务：%s \n", tasks.get(0).getName());
 
+        // 取消任务
+        runtimeService.deleteProcessInstance(processInstance.getId(), "取消流程");
+        System.out.printf("--> 取消流程：%s \n", tasks.get(0).getName());
 
         // 查询历史
-        List<HistoricTaskInstance> history = historyService.createHistoricTaskInstanceQuery().processInstanceId(task.getProcessInstanceId()).list();
+        List<HistoricTaskInstance> history = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstance.getId()).list();
         List<String> names = history.stream().map(TaskInfo::getName).collect(Collectors.toList());
         System.out.printf("执行历史：%s", String.join(" --> ", names));
     }
