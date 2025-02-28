@@ -1,5 +1,6 @@
 package com.wugenshui.github.proguard.controller;
 
+import com.wugenshui.github.proguard.Util;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @RequestMapping("/")
     public String test() {
+        System.out.println(Util.test());
         return "Hello World!";
     }
 }

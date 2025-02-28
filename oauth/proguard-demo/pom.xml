@@ -78,9 +78,6 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
-                        <configuration>
-                            <mainClass>com.itlab1024.proguard.SpringBootProguardApplication</mainClass>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
