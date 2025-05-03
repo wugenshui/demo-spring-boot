@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * @author : chenbo
@@ -18,26 +19,30 @@ public class CodeGenerator {
                 .globalConfig(builder -> {
                     builder
                             .author("chenbo") // 设置作者
-                            .enableSwagger() // 开启 swagger 模式
-                            // 覆盖已生成文件
-                            .fileOverride()
+                            .enableSwagger()
                             .disableOpenDir()
                             .dateType(DateType.ONLY_DATE)
-                            .outputDir(projectPath + "src/main/java"); // 指定输出目录
+                            .outputDir(projectPath + "src/main/java");
                 })
                 .packageConfig(builder -> {
                     builder
                             .parent("com.mybatis.plus.mysql") // 设置父包名
-                            .moduleName("sims") // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.mapper, projectPath + "src/main/resources/mapper/")); // 设置mapperXml生成路径
+                            .entity("entity")
+                            .mapper("mapper")
+                            .service("service")
+                            .serviceImpl("service.impl")
+                            .xml("mapper.xml")
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "src/main/resources/mapper/"))
+
+                    ;
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
-                            .addTablePrefix("sims_")
+                            .addTablePrefix("sims_") // 设置过滤表前缀
                             .controllerBuilder().enableFileOverride().enableRestStyle()
                             .entityBuilder().enableFileOverride().enableLombok()
-                            .mapperBuilder().enableFileOverride()
-                            .serviceBuilder().enableFileOverride(); // 设置过滤表前缀
+                            .serviceBuilder().enableFileOverride().formatServiceFileName("%sService")
+                    ;
                 })
                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .templateEngine(new FreemarkerTemplateEngine())
