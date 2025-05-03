@@ -1,5 +1,6 @@
 package com.mybatis.plus.mysql.sims.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author chenbo
- * @since 2023-11-22
+ * @since 2025-05-03
  */
 @Getter
 @Setter
@@ -25,6 +26,7 @@ public class College implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("学院ID")
+    @TableId("COLLEGE_ID")
     private String collegeId;
 
     @ApiModelProperty("学院名称")
@@ -62,6 +64,4 @@ public class College implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
-
-
 }

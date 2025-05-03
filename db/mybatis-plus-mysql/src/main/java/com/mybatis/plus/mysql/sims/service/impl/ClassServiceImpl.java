@@ -12,12 +12,9 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author chenbo
- * @since 2023-11-22
+ * @since 2025-05-03
  */
 @Service
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements IClassService {
-    @Override
-    public boolean removeByClassId(String classId) {
-        return lambdaUpdate().eq(Class::getClassId, classId).remove();
-    }
+
 }

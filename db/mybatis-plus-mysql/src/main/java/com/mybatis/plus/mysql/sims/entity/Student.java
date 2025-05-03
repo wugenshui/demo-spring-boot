@@ -1,5 +1,6 @@
 package com.mybatis.plus.mysql.sims.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author chenbo
- * @since 2023-11-22
+ * @since 2025-05-03
  */
 @Getter
 @Setter
@@ -32,6 +33,7 @@ public class Student implements Serializable {
     private String classId;
 
     @ApiModelProperty("学生ID")
+    @TableId("STUDENT_ID")
     private String studentId;
 
     @ApiModelProperty("学生姓名")
@@ -117,6 +119,4 @@ public class Student implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
-
-
 }
