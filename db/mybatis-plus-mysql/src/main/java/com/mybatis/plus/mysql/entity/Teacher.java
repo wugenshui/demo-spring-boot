@@ -2,6 +2,7 @@ package com.mybatis.plus.mysql.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.mybatis.plus.mysql.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Setter
 @TableName("sims_teacher")
 @ApiModel(value = "Teacher对象", description = "教师")
-public class Teacher implements Serializable {
+public class Teacher extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -65,14 +66,8 @@ public class Teacher implements Serializable {
     @ApiModelProperty("乐观锁")
     private Integer revision;
 
-    @ApiModelProperty("创建人")
-    private String creater;
-
     @ApiModelProperty("创建时间")
     private Date createTime;
-
-    @ApiModelProperty("更新人")
-    private String updater;
 
     @ApiModelProperty("更新时间")
     private Date updateTime;

@@ -27,6 +27,7 @@ public class CodeGenerator {
                 .packageConfig(builder -> {
                     builder
                             .parent("com.mybatis.plus.mysql") // 设置父包名
+                            .controller("controller")
                             .entity("entity")
                             .mapper("mapper")
                             .service("service")
@@ -40,7 +41,8 @@ public class CodeGenerator {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_") // 设置过滤表前缀
                             .controllerBuilder().enableFileOverride().enableRestStyle()
-                            .entityBuilder().enableFileOverride().enableLombok()
+                            .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().enableLombok()
+                            .mapperBuilder().enableFileOverride()
                             .serviceBuilder().enableFileOverride().formatServiceFileName("%sService")
                     ;
                 })
