@@ -41,6 +41,7 @@ public class CodeGenerator {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_") // 设置过滤表前缀
                             .controllerBuilder().enableFileOverride().enableRestStyle()
+                            // 设置实体父类与父类字段
                             .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().enableLombok()
                             .mapperBuilder().enableFileOverride()
                             .serviceBuilder().enableFileOverride().formatServiceFileName("%sService")
