@@ -1,4 +1,4 @@
-package com.mybatis.plus.mysql.generator;
+package com.mybatis.plus.mysql;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
@@ -20,7 +20,7 @@ public class CodeGenerator {
                             .author("chenbo") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             // 覆盖已生成文件
-                            //.fileOverride()
+                            .fileOverride()
                             .disableOpenDir()
                             .dateType(DateType.ONLY_DATE)
                             .outputDir(projectPath + "src/main/java"); // 指定输出目录
@@ -34,8 +34,10 @@ public class CodeGenerator {
                 .strategyConfig(builder -> {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_")
-                            .controllerBuilder().enableRestStyle()
-                            .entityBuilder().enableLombok(); // 设置过滤表前缀
+                            .controllerBuilder().enableFileOverride().enableRestStyle()
+                            .entityBuilder().enableFileOverride().enableLombok()
+                            .mapperBuilder().enableFileOverride()
+                            .serviceBuilder().enableFileOverride(); // 设置过滤表前缀
                 })
                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .templateEngine(new FreemarkerTemplateEngine())
