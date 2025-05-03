@@ -42,7 +42,7 @@ public class CodeGenerator {
                             .addTablePrefix("sims_") // 设置过滤表前缀
                             .controllerBuilder().enableFileOverride().enableRestStyle()
                             // 设置实体父类与父类字段
-                            .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().enableLombok()
+                            .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().disableSerialVersionUID().enableLombok()
                             .mapperBuilder().enableFileOverride()
                             .serviceBuilder().enableFileOverride().formatServiceFileName("%sService")
                     ;
