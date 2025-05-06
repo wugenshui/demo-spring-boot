@@ -14,11 +14,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public SysUser getFirst() {
+    public SysUser getUserByName(String username) {
         return SysUser.builder()
                 .id("100")
-                .username("张三")
-                .password(passwordEncoder.encode("1"))
+                .username(username)
+                .password(passwordEncoder.encode("123456"))
                 .mobile("12315")
                 .build();
     }

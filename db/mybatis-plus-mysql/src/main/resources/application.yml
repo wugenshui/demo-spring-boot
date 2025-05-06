@@ -2,7 +2,6 @@ server:
   port: 8080
 
 spring:
-  cont
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # serverTimezone=GMT%2B8 Asia/Shanghai 东八区，领先全球标准时间UTC八个小时
