@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: false
+        namespaces:
+          - "default"
+    discovery:
+      client:
+        # local debug use
+        simple:
+          instances:
+            jdi2-service:
+              - instanceId: jdi2-service
+                serviceId: jdi2-service
+                host: 192.168.0.89
+                port: 8080
+
+

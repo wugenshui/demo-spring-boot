@@ -1,0 +1,86 @@
+# 创建 ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spring-cloud-account
+  namespace: default
+---
+# 定义 Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: spring-cloud-role
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints", "services"]
+    verbs: ["get", "list", "watch"]
+---
+# 绑定 Role 到 ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: spring-cloud-binding
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: spring-cloud-account
+    namespace: default
+roleRef:
+  kind: Role
+  name: spring-cloud-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# 服务的k8s部署文件，如果不进行k8s部署也可以删除该文件
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-spring-cloud-k8s
+spec:
+  selector:
+    matchLabels:
+      app: demo-spring-cloud-k8s
+  # 部署的实例数量
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: demo-spring-cloud-k8s
+    spec:
+      containers:
+        - name: demo-spring-cloud-k8s
+          # 镜像名称，由流水线动态修改，若手动部署可以自行修改
+          image: nginx:alpine
+          # 只有镜像不存在时，才会进行镜像拉取
+          imagePullPolicy: IfNotPresent
+          ports:
+            # 容器内服务运行端口，需与配置文件中端口一致
+            - containerPort: 8080
+      serviceAccountName: spring-cloud-account
+      # k8s集群配置密钥
+      imagePullSecrets:
+        - name: harbor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-spring-cloud-k8s
+spec:
+  # 指定标签选择器选择的标签范围
+  selector:
+    app: demo-spring-cloud-k8s
+  type: NodePort
+  ports:
+    - name: demo-spring-cloud-k8s
+      # 设定Serivce对外提供服务的端口，建议为80即可
+      port: 80
+      # 容器内服务运行端口，需与配置文件中端口一致
+      targetPort: 8080
+      # 它仅在type为NodePort时才需要指定
+      nodePort: 30001

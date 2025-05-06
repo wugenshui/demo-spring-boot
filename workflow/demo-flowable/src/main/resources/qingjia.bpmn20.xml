@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+        xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+        xmlns:flowable="http://flowable.org/bpmn"
+        xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+        xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.activiti.org/processdef">
+    <process id="qingjia" name="请假" isExecutable="true">
+        <extensionElements>
+            <flowable:properties>
+                <flowable:property name="approveType" value="2" />
+            </flowable:properties>
+        </extensionElements>
+        <startEvent id="Event_1krf268">
+            <extensionElements>
+                <flowable:formData />
+            </extensionElements>
+            <outgoing>Flow_0ti2zz3</outgoing>
+        </startEvent>
+        <userTask id="Activity_0idxf0p" name="上级领导审批" flowable:candidateStrategy="30" flowable:candidateParam="1">
+            <extensionElements>
+                <flowable:properties>
+                    <flowable:property name="approveType" value="6" />
+                    <flowable:property name="age" value="16" />
+                </flowable:properties>
+                <flowable:formData />
+            </extensionElements>
+            <incoming>Flow_0ti2zz3</incoming>
+            <outgoing>Flow_19pl6nz</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_0ti2zz3" sourceRef="Event_1krf268" targetRef="Activity_0idxf0p" />
+        <exclusiveGateway id="Gateway_18ycfdc">
+            <incoming>Flow_19pl6nz</incoming>
+            <outgoing>Flow_0vunh9x</outgoing>
+            <outgoing>Flow_0xqgdq8</outgoing>
+        </exclusiveGateway>
+        <sequenceFlow id="Flow_19pl6nz" sourceRef="Activity_0idxf0p" targetRef="Gateway_18ycfdc" />
+        <userTask id="Activity_0pdgaua" name="高层领导审批" flowable:candidateStrategy="30" flowable:candidateParam="1">
+            <extensionElements>
+                <flowable:taskListener class="com.huaweisoft.jdi2.service.module.bpm.framework.flowable.core.listener.BpmAutoCompleteTaskListener" event="create" id="aaa" />
+                <flowable:properties>
+                    <flowable:property name="approveType" value="4" />
+                </flowable:properties>
+                <flowable:formData />
+            </extensionElements>
+            <incoming>Flow_0vunh9x</incoming>
+            <outgoing>Flow_0k4bpdq</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_0vunh9x" name="请假天数&#62;=3" sourceRef="Gateway_18ycfdc" targetRef="Activity_0pdgaua">
+            <conditionExpression xsi:type="tFormalExpression">${day&gt;=3}</conditionExpression>
+        </sequenceFlow>
+        <endEvent id="Event_15y9v3z">
+            <incoming>Flow_0xqgdq8</incoming>
+        </endEvent>
+        <sequenceFlow id="Flow_0xqgdq8" name="请假天数&#60;3" sourceRef="Gateway_18ycfdc" targetRef="Event_15y9v3z">
+            <conditionExpression xsi:type="tFormalExpression">${day&lt;3}</conditionExpression>
+        </sequenceFlow>
+        <endEvent id="Event_023esj6">
+            <incoming>Flow_0k4bpdq</incoming>
+        </endEvent>
+        <sequenceFlow id="Flow_0k4bpdq" sourceRef="Activity_0pdgaua" targetRef="Event_023esj6" />
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram">
+        <bpmndi:BPMNPlane id="qingjia_di" bpmnElement="qingjia">
+            <bpmndi:BPMNShape id="Event_1krf268_di" bpmnElement="Event_1krf268">
+                <dc:Bounds x="152" y="262" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0idxf0p_di" bpmnElement="Activity_0idxf0p">
+                <dc:Bounds x="240" y="240" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Gateway_18ycfdc_di" bpmnElement="Gateway_18ycfdc" isMarkerVisible="true">
+                <dc:Bounds x="395" y="255" width="50" height="50" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0pdgaua_di" bpmnElement="Activity_0pdgaua">
+                <dc:Bounds x="550" y="240" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_15y9v3z_di" bpmnElement="Event_15y9v3z">
+                <dc:Bounds x="552" y="372" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_023esj6_di" bpmnElement="Event_023esj6">
+                <dc:Bounds x="762" y="262" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_0ti2zz3_di" bpmnElement="Flow_0ti2zz3">
+                <di:waypoint x="188" y="280" />
+                <di:waypoint x="240" y="280" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_19pl6nz_di" bpmnElement="Flow_19pl6nz">
+                <di:waypoint x="340" y="280" />
+                <di:waypoint x="395" y="280" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0vunh9x_di" bpmnElement="Flow_0vunh9x">
+                <di:waypoint x="445" y="280" />
+                <di:waypoint x="550" y="280" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="467" y="253" width="62" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0xqgdq8_di" bpmnElement="Flow_0xqgdq8">
+                <di:waypoint x="420" y="305" />
+                <di:waypoint x="420" y="390" />
+                <di:waypoint x="552" y="390" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="432" y="333" width="56" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0k4bpdq_di" bpmnElement="Flow_0k4bpdq">
+                <di:waypoint x="650" y="280" />
+                <di:waypoint x="762" y="280" />
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>
