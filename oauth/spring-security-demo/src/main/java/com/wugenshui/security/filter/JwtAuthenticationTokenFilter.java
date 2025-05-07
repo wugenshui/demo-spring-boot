@@ -46,7 +46,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //获取token
+        // 获取token
         String token = request.getHeader("token");
         if (!StringUtils.hasText(token)) {
             // 放行
@@ -54,7 +54,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
             //throw new DisabledException("未携带访问令牌");
         }
-        //解析token
+        // 解析token
         String userid;
         String username;
         boolean verify = JWTUtil.verify(token, appProperties.getJwtSecret().getBytes());
@@ -69,10 +69,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new DisabledException("token非法");
         }
-        //从redis中获取用户信息
-        //String redisKey = USER_PREFIX + userid;
-        //JSONObject jsonObject = (JSONObject) redisTemplate.opsForValue().get(redisKey);
-        //User user = JSONObject.parseObject(jsonObject.toJSONString(), User.class);
+        // 从redis中获取用户信息
+        // String redisKey = USER_PREFIX + userid;
+        // JSONObject jsonObject = (JSONObject) redisTemplate.opsForValue().get(redisKey);
+        // User user = JSONObject.parseObject(jsonObject.toJSONString(), User.class);
         if (Objects.isNull(userid)) {
             throw new UsernameNotFoundException("用户未登录");
         }
@@ -82,7 +82,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        //放行
+        // 放行
         filterChain.doFilter(request, response);
     }
 }
