@@ -44,7 +44,7 @@
         <dozer.version>5.5.1</dozer.version>
         <velocity.version>2.1</velocity.version>
         <netty.version>4.1.47.Final</netty.version>
-        <jgit.version>5.8.0.202006091008-r</jgit.version>
+        <jgit.version>6.6.1.202309021850-r</jgit.version>
         <activiti.version>7.0.0.SR1</activiti.version>
     </properties>
 
