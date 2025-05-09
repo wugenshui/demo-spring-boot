@@ -1,0 +1,6 @@
+spring.main.allow-circular-references: true
+
+
+app:
+  jwtSecret: 123456
+  jwtExpirationTime: 12h

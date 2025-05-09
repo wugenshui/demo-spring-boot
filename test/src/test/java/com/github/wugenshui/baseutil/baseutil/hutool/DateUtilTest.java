@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 public class DateUtilTest {
     @Test
-    public void convertTest() {
+    public void apiTest() {
         Date date = new Date();
 
         System.out.println(DateUtil.beginOfYear(date) + " 至 " + DateUtil.endOfYear(date));
@@ -27,8 +27,10 @@ public class DateUtilTest {
         System.out.println(DateUtil.beginOfWeek(date) + " 至 " + DateUtil.endOfWeek(date));
         System.out.println(DateUtil.beginOfDay(date) + " 至 " + DateUtil.endOfDay(date));
 
-        System.out.println(DateUtil.now());
-        System.out.println(DateUtil.today());
+        System.out.println("当前时间 = " + DateUtil.now());
+        System.out.println("当天 = " + DateUtil.today());
+        System.out.println("时间戳 = " + DateUtil.date().getTime() + " : " + DateUtil.current());
+        System.out.println("时间转换 = " + DateUtil.date(Long.parseLong(String.valueOf(DateUtil.current()))));
 
         System.out.println(DateUtil.format(date, DatePattern.NORM_DATETIME_FORMAT));
         System.out.println(DateUtil.format(date, DatePattern.NORM_DATE_FORMAT));
