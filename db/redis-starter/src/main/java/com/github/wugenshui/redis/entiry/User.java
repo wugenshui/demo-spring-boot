@@ -1,4 +1,4 @@
-package com.github.wugenshui.redis.vo;
+package com.github.wugenshui.redis.entiry;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
