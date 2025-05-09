@@ -73,8 +73,7 @@ public class CacheConfig extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheManager cacheManager() {
-        RedisCacheManager build = RedisCacheManager.builder(factory).cacheDefaults(redisCacheConfiguration()).build();
-        return build;
+        return RedisCacheManager.builder(factory).cacheDefaults(redisCacheConfiguration()).build();
     }
 
     /**
@@ -84,15 +83,13 @@ public class CacheConfig extends CachingConfigurerSupport {
      */
     @Bean
     public RedisCacheConfiguration redisCacheConfiguration() {
-        RedisCacheConfiguration cacheConfiguration =
-                defaultCacheConfig()
-                        // 设置缓存前缀
-                        .prefixCacheNameWith("cache:")
-                        // 设置缓存的默认过期时间，也是使用Duration设置
-                        .entryTtl(Duration.ofMinutes(30))
-                        // 如果是空值，不缓存
-                        .disableCachingNullValues()
-                        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()));
-        return cacheConfiguration;
+        return defaultCacheConfig()
+                // 设置缓存前缀
+                .prefixCacheNameWith("cache:")
+                // 设置缓存的默认过期时间，也是使用Duration设置
+                .entryTtl(Duration.ofMinutes(30))
+                // 如果是空值，不缓存
+                .disableCachingNullValues()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()));
     }
 }
