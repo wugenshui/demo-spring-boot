@@ -22,13 +22,13 @@ public class App {
     public static void main(String[] args) {
         ConfigurableApplicationContext app = SpringApplication.run(App.class, args);
         ConfigurableEnvironment environment = app.getEnvironment();
-        System.out.println("jiami1:" + environment.getProperty("jiami1"));
-        System.out.println("weijiami:" + environment.getProperty("weijiami"));
-        System.out.println("jiami2:" + environment.getProperty("jiami2"));
-
+        // 解密
         StringEncryptor encryptor = app.getBean(StringEncryptor.class);
-        System.out.println("encryptor.encrypt(\"Ado@sthw123\") = " + encryptor.encrypt("Ado@sthw123"));
-        System.out.println("encryptor.encrypt(\"1q2w#E$R\") = " + encryptor.encrypt("1q2w#E$R"));
-        System.out.println("encryptor.encrypt(\"minio\") = " + encryptor.encrypt("minio"));
+        System.out.println("解密后：数据库 = " + environment.getProperty("spring.datasource.password"));
+        System.out.println("解密后：缓存 = " + environment.getProperty("spring.redis.password"));
+
+        // 加密
+        System.out.println("加密后：数据库 = ENC(" + encryptor.encrypt("rVXkNMp52o") + ")");
+        System.out.println("加密后：缓存 = ENC(" + encryptor.encrypt("lrlS9XjR+F") + ")");
     }
 }
