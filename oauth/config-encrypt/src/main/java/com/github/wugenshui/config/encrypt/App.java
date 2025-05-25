@@ -29,6 +29,6 @@ public class App {
 
         // 加密
         System.out.println("加密后：数据库 = ENC(" + encryptor.encrypt("rVXkNMp52o") + ")");
-        System.out.println("加密后：缓存 = ENC(" + encryptor.encrypt("lrlS9XjR+F") + ")");
+        System.out.println("加密后：缓存 = ENC(" + encryptor.encrypt("WN$FFnmpk1") + ")");
     }
 }
