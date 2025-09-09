@@ -92,7 +92,7 @@ public class DatabaseInterceptor extends BaseMultiTableInnerInterceptor implemen
         try {
             statement = CCJSqlParserUtil.parse(sql);
         } catch (JSQLParserException e) {
-            log.error("handleSql error:", e);
+            log.error("handleSql error: {} sql: {}", e.getMessage(), sql);
             return sql;
         }
         // 判断Sql类型
