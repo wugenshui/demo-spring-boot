@@ -54,6 +54,7 @@ class CompanyIdTest {
     @ParameterizedTest(name = "{index} => {0}")
     @CsvSource(value = {
             // ===================== INSERT =====================
+            "INSERT INTO user (id, name, company_id) VALUES (1, 'Tom', 1008) | INSERT INTO user (id, name, company_id) VALUES (1, 'Tom', 1008)",
             "INSERT INTO user(id, name) VALUES (1, 'Tom') | INSERT INTO user (id, name, company_id) VALUES (1, 'Tom', 6114)",
             "INSERT INTO user SELECT * FROM temp_user | INSERT INTO user SELECT * FROM temp_user",
             // 注：INSERT SELECT 不修改字段，需业务保证 source 表有 company_id
