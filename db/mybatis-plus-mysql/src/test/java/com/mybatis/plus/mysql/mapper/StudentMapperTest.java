@@ -1,8 +1,10 @@
 package com.mybatis.plus.mysql.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.BadSqlGrammarException;
 
 import javax.annotation.Resource;
 
@@ -18,7 +20,7 @@ class StudentMapperTest {
 
     @Test
     void list() {
-        System.out.println(studentMapper.list());
+        Assertions.assertThrows(BadSqlGrammarException.class, () -> studentMapper.list());
     }
 
     @Test
