@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface StudentService extends IService<Student> {
-    List<Student> way1();
+    List<Student> ignoreTenantWay1();
 
-    List<Student> way2();
+    List<Student> ignoreTenantWay2();
 }

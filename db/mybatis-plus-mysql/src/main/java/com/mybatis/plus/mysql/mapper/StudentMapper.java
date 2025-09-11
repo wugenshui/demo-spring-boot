@@ -15,12 +15,5 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface StudentMapper extends BaseMapper<Student> {
-    default List<Student> list() {
-        return selectList(null);
-    }
 
-    @InterceptorIgnore(tenantLine = "true")
-    default List<Student> listInterceptorIgnore() {
-        return selectList(null);
-    }
 }

@@ -18,13 +18,5 @@ class StudentMapperTest {
     @Resource
     private StudentMapper studentMapper;
 
-    @Test
-    void list() {
-        Assertions.assertThrows(BadSqlGrammarException.class, () -> studentMapper.list());
-    }
 
-    @Test
-    void listInterceptorIgnore() {
-        System.out.println(studentMapper.listInterceptorIgnore());
-    }
 }

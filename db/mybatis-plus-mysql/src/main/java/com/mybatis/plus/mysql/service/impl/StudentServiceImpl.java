@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
-    public List<Student> way1() {
+    public List<Student> ignoreTenantWay1() {
         List<Student> list;
         try {
             MybatisTenantContext.set(true);
@@ -34,7 +34,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @IgnoreTenant
-    public List<Student> way2() {
+    public List<Student> ignoreTenantWay2() {
         return lambdaQuery().list();
     }
 }

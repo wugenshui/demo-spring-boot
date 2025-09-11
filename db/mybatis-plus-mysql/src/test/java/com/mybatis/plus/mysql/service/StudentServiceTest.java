@@ -16,12 +16,12 @@ class StudentServiceTest {
     private StudentService studentService;
 
     @Test
-    void way1() {
-        studentService.way1();
+    void ignoreTenantWay1() {
+        studentService.ignoreTenantWay1();
     }
 
     @Test
-    void way2() {
-        studentService.way2();
+    void ignoreTenantWay2() {
+        studentService.ignoreTenantWay2();
     }
 }
