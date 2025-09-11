@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -15,11 +16,11 @@ import java.util.HashMap;
 public class CodeGenerator {
     public static void main(String[] args) {
         String projectPath = System.getProperty("user.dir") + "/db/mybatis-plus-mysql/";
-        FastAutoGenerator.create("jdbc:p6spy:mysql://localhost:3306/mybatis-plus-mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8", "root", "root")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/mybatis-plus-mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8", "root", "root")
                 .globalConfig(builder -> {
                     builder
                             .author("chenbo") // 设置作者
-                            .enableSwagger()
+                            .enableSpringdoc()
                             .disableOpenDir()
                             .dateType(DateType.ONLY_DATE)
                             .outputDir(projectPath + "src/main/java");
@@ -33,9 +34,7 @@ public class CodeGenerator {
                             .service("service")
                             .serviceImpl("service.impl")
                             .xml("mapper.xml")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "src/main/resources/mapper/"))
-
-                    ;
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "src/main/resources/mapper/"));
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
@@ -43,8 +42,8 @@ public class CodeGenerator {
                             .controllerBuilder().enableFileOverride().enableRestStyle()
                             // 设置实体父类与父类字段
                             .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().disableSerialVersionUID().enableLombok()
-                            .mapperBuilder().enableFileOverride()
-                            .serviceBuilder().enableFileOverride().formatServiceFileName("%sService")
+                            .mapperBuilder()
+                            .serviceBuilder().formatServiceFileName("%sService")
                     ;
                 })
                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板

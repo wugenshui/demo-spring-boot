@@ -1,16 +1,10 @@
-package com.mybatis.plus.mysql;
+package com.mybatis.plus.mysql.aop;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.mybatis.plus.mysql.aop.DatabaseInterceptor;
 import com.mybatis.plus.mysql.aop.handle.CompanyLineHandler;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.Select;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
