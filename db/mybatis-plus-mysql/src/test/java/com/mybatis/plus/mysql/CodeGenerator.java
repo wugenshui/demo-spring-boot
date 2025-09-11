@@ -20,7 +20,7 @@ public class CodeGenerator {
                 .globalConfig(builder -> {
                     builder
                             .author("chenbo") // 设置作者
-                            .enableSpringdoc()
+                            .enableSwagger()
                             .disableOpenDir()
                             .dateType(DateType.ONLY_DATE)
                             .outputDir(projectPath + "src/main/java");
@@ -40,7 +40,7 @@ public class CodeGenerator {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_") // 设置过滤表前缀
                             // 设置实体父类与父类字段
-                            .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().disableSerialVersionUID().enableLombok()
+                            .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "create_time", "updater", "update_time", "tenant_id").enableFileOverride().disableSerialVersionUID().enableLombok()
                             .mapperBuilder()
                             .serviceBuilder().formatServiceFileName("%sService")
                             .controllerBuilder().enableRestStyle()
