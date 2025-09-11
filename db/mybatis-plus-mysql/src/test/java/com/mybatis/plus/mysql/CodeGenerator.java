@@ -39,11 +39,11 @@ public class CodeGenerator {
                 .strategyConfig(builder -> {
                     builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_") // 设置过滤表前缀
-                            .controllerBuilder().enableFileOverride().enableRestStyle()
                             // 设置实体父类与父类字段
                             .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "createTime", "updater", "updateTime", "tenantId").enableFileOverride().disableSerialVersionUID().enableLombok()
                             .mapperBuilder()
                             .serviceBuilder().formatServiceFileName("%sService")
+                            .controllerBuilder().enableRestStyle()
                     ;
                 })
                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板
