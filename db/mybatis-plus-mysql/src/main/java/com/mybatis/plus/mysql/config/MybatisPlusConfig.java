@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.mybatis.plus.mysql.aop.DatabaseInterceptor;
+import com.mybatis.plus.mysql.aop.MybatisTenantContext;
 import com.mybatis.plus.mysql.aop.handle.CompanyLineHandler;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author : chenbo
@@ -60,6 +62,9 @@ public class MybatisPlusConfig {
 
             @Override
             public boolean ignoreTable(String tableName) {
+                if (Boolean.TRUE.equals(MybatisTenantContext.get())) {
+                    return true;
+                }
                 tableName = tableName.replaceAll("`", "").toLowerCase();
                 return tableName.startsWith("wb_") || ignoreTableList.contains(tableName);
             }

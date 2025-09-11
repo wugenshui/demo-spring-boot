@@ -5,8 +5,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author : chenbo
  * @date : 2025-09-11
@@ -18,12 +16,12 @@ class StudentServiceTest {
     private StudentService studentService;
 
     @Test
-    void serviceList() {
-        studentService.serviceList();
+    void way1() {
+        studentService.way1();
     }
 
     @Test
-    void serviceListInterceptorIgnore() {
-        studentService.serviceListInterceptorIgnore();
+    void way2() {
+        studentService.way2();
     }
 }

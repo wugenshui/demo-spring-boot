@@ -1,6 +1,8 @@
 package com.mybatis.plus.mysql.service.impl;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.mybatis.plus.mysql.aop.IgnoreTenant;
+import com.mybatis.plus.mysql.aop.MybatisTenantContext;
 import com.mybatis.plus.mysql.entity.Student;
 import com.mybatis.plus.mysql.mapper.StudentMapper;
 import com.mybatis.plus.mysql.service.StudentService;
@@ -19,12 +21,20 @@ import java.util.List;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
-    public List<Student> serviceList() {
-        return lambdaQuery().list();
+    public List<Student> way1() {
+        List<Student> list;
+        try {
+            MybatisTenantContext.set(true);
+            list = lambdaQuery().list();
+        } finally {
+            // 使用完一定要保证clear执行
+            MybatisTenantContext.clear();
+        }
+        return list;
     }
 
-    @InterceptorIgnore(tenantLine = "true")
-    public List<Student> serviceListInterceptorIgnore() {
+    @IgnoreTenant
+    public List<Student> way2() {
         return lambdaQuery().list();
     }
 }

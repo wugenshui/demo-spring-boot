@@ -1,6 +1,5 @@
 package com.mybatis.plus.mysql.service;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.mybatis.plus.mysql.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,8 +14,7 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface StudentService extends IService<Student> {
-    List<Student> serviceList();
+    List<Student> way1();
 
-    @InterceptorIgnore(tenantLine = "true")
-    List<Student> serviceListInterceptorIgnore();
+    List<Student> way2();
 }
