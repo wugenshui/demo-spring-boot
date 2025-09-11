@@ -21,4 +21,4 @@ mybatis-plus:
 # 打印执行sql日志
 logging:
   level:
-    com.mybatis.plus.mysql.sims.mapper: debug
+    com.mybatis.plus.mysql.mapper: debug

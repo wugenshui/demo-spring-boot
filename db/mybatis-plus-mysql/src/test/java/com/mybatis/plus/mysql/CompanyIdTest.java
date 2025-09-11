@@ -1,5 +1,6 @@
 package com.mybatis.plus.mysql;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.mybatis.plus.mysql.aop.DatabaseInterceptor;
 import com.mybatis.plus.mysql.aop.handle.CompanyLineHandler;
 import net.sf.jsqlparser.JSQLParserException;
@@ -34,6 +35,7 @@ class CompanyIdTest {
             "SELECT * FROM user LIMIT 10,                              SELECT * FROM user WHERE company_id = 6114 LIMIT 10",
             "SELECT * FROM user WHERE id IN (SELECT user_id FROM user_role), select * from user where id in (select user_id from user_role where company_id = 6114) and company_id = 6114"
     })
+    @InterceptorIgnore(tenantLine = "true")
     @DisplayName("测试 SQL 重写：自动注入 company_id 条件")
     void testQuerySql(String inputSql, String expectedSql) throws JSQLParserException {
         // 模拟 CompanyLineHandler 返回固定的 company_id = 6114
