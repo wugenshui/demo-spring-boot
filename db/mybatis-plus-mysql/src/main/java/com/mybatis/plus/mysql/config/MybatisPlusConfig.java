@@ -42,19 +42,22 @@ public class MybatisPlusConfig {
     //public MetaObjectHandler defaultMetaObjectHandler() {
     //    return new DefaultDBFieldHandler(); // 自动填充参数类
     //}
+
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // interceptor.addInnerInterceptor(dataPermissionDatabaseInterceptor());
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // 如果配置多个插件, 切记分页最后添加
         // 如果有多数据源可以不配具体类型, 否则都建议配上具体的 DbType
         return interceptor;
     }
 
+    /**
+     * 公司权限拦截器
+     */
     @Bean
-    public DatabaseInterceptor dataPermissionDatabaseInterceptor(MybatisPlusInterceptor interceptor) {
-
-        // 创建 DataPermissionDatabaseInterceptor 拦截器
-        DatabaseInterceptor inner = new DatabaseInterceptor(new CompanyLineHandler() {
+    public DatabaseInterceptor dataPermissionDatabaseInterceptor() {
+        return new DatabaseInterceptor(new CompanyLineHandler() {
             @Override
             public Expression getCompanyId() {
                 return new LongValue(10086);
@@ -69,9 +72,5 @@ public class MybatisPlusConfig {
                 return tableName.startsWith("wb_") || ignoreTableList.contains(tableName);
             }
         });
-        List<InnerInterceptor> inners = new ArrayList<>(interceptor.getInterceptors());
-        inners.add(0, inner);
-        interceptor.setInterceptors(inners);
-        return inner;
     }
 }
