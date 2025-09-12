@@ -16,6 +16,7 @@ spring:
 # 批量执行脚本
 mybatis-plus:
   executorType: BATCH
+  typeAliasesPackage: com.mybatis.plus.mysql.entity
 
 # 打印执行sql日志
 logging:

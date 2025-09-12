@@ -1,6 +1,9 @@
 package com.mybatis.plus.mysql.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.mybatis.plus.mysql.entity.Student;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,5 +21,10 @@ class StudentMapperTest {
     @Resource
     private StudentMapper studentMapper;
 
-
+    @Test
+    void selectByWrapper() {
+        LambdaQueryWrapper<Student> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Student::getId, 1);
+        studentMapper.selectByWrapper(queryWrapper);
+    }
 }
