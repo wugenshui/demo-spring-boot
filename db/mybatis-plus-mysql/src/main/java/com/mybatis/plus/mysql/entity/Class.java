@@ -25,12 +25,6 @@ import lombok.ToString;
 public class Class extends BaseEntity {
 
     /**
-     * 主键
-     */
-    @ApiModelProperty("主键")
-    private String id;
-
-    /**
      * 班级名称
      */
     @ApiModelProperty("班级名称")

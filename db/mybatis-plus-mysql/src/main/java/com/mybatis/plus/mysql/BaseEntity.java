@@ -12,6 +12,9 @@ import java.util.Date;
  * @date : 2025-05-03
  */
 public class BaseEntity {
+
+    @ApiModelProperty("主键")
+    private String id;
     
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("创建人")

@@ -27,12 +27,6 @@ import java.util.Date;
 public class Teacher extends BaseEntity {
 
     /**
-     * 主键
-     */
-    @ApiModelProperty("主键")
-    private String id;
-
-    /**
      * 班级ID
      */
     @ApiModelProperty("班级ID")
