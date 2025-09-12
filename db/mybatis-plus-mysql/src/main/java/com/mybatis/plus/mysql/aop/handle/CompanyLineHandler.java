@@ -30,7 +30,7 @@ public interface CompanyLineHandler {
      * 获取字段名
      */
     default String getCompanyIdColumn() {
-        return "company_id";
+        return "tenant_id";
     }
 
     /**
