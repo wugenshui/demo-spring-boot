@@ -14,6 +14,11 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface StudentService extends IService<Student> {
+
+    List<Student> listByGender(Integer gender);
+
+    List<Student> or();
+
     List<Student> ignoreTenantWay1();
 
     List<Student> ignoreTenantWay2();

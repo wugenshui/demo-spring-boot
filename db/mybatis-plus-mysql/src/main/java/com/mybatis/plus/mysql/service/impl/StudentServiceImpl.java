@@ -21,6 +21,19 @@ import java.util.List;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
+
+    @Override
+    public List<Student> listByGender(Integer gender) {
+        return lambdaQuery().eq(Student::getGender, gender).list();
+    }
+
+    @Override
+    public List<Student> or() {
+        return lambdaQuery().and(i -> i.and(j -> j.eq(Student::getGender, 1))
+                .or(j -> j.eq(Student::getClassId, "31").eq(Student::getGender, 0))
+        ).list();
+    }
+
     public List<Student> ignoreTenantWay1() {
         List<Student> list;
         try {
