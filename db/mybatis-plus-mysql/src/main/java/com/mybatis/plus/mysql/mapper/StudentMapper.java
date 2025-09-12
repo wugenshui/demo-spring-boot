@@ -23,5 +23,10 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface StudentMapper extends MPJBaseMapper<Student> {
+
+    List<Student> selectByStudent(Student student);
+
+    List<Student> selectByUserName(String userName);
+
     List<Student> selectByWrapper(@Param(Constants.WRAPPER) Wrapper<Student> wrapper);
 }

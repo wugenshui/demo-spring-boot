@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.BadSqlGrammarException;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : chenbo
@@ -20,6 +21,22 @@ class StudentMapperTest {
 
     @Resource
     private StudentMapper studentMapper;
+
+    @Test
+    void student() {
+        Student student = new Student();
+        student.setStudentName("张");
+        student.setGender(0);
+        List<Student> students = studentMapper.selectByStudent(student);
+        System.out.println(students);
+    }
+
+    @Test
+    void selectByUserName() {
+        String userName = "张";
+        List<Student> students = studentMapper.selectByUserName(userName);
+        System.out.println(students);
+    }
 
     @Test
     void selectByWrapper() {

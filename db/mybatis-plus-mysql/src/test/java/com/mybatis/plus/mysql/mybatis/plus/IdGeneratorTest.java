@@ -2,13 +2,15 @@ package com.mybatis.plus.mysql.mybatis.plus;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author : chenbo
  * @date : 2025-09-12
  */
-public class IdGeneratorTest {
-    public static void main(String[] args) {
+class IdGeneratorTest {
+    @Test
+    void id() {
         // 推荐使用，19位，顺序
         Sequence sequence = new Sequence(null);
         for (int i = 0; i < 10; i++) {
