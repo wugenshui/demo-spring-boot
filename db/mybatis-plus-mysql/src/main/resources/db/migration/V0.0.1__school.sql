@@ -1,3 +1,5 @@
+
+/* --------------- 创建表 --------------- */
 DROP TABLE IF EXISTS sims_class;
 CREATE TABLE sims_class(
     `id` VARCHAR(32) NOT NULL  COMMENT '主键' ,
@@ -6,6 +8,7 @@ CREATE TABLE sims_class(
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
     `updater` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '更新人' ,
     `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间' ,
+    `deleted` TINYINT(255) NOT NULL DEFAULT 0 COMMENT '是否删除;0=未删除，1=已删除' ,
     `tenant_id` VARCHAR(32) NOT NULL DEFAULT 0 COMMENT '租户号' ,
     PRIMARY KEY (id)
 )  COMMENT = '班级';
@@ -23,6 +26,7 @@ CREATE TABLE sims_student(
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
     `updater` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '更新人' ,
     `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间' ,
+    `deleted` TINYINT(255) NOT NULL DEFAULT 0 COMMENT '是否删除;0=未删除，1=已删除' ,
     `tenant_id` VARCHAR(32) NOT NULL DEFAULT 0 COMMENT '租户号' ,
     PRIMARY KEY (id)
 )  COMMENT = '学生';
@@ -40,6 +44,7 @@ CREATE TABLE sims_teacher(
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
     `updater` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '更新人' ,
     `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间' ,
+    `deleted` TINYINT(255) NOT NULL DEFAULT 0 COMMENT '是否删除;0=未删除，1=已删除' ,
     `tenant_id` VARCHAR(32) NOT NULL DEFAULT 0 COMMENT '租户号' ,
     PRIMARY KEY (id)
 )  COMMENT = '教师';

@@ -2,6 +2,7 @@ package com.mybatis.plus.mysql;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -11,9 +12,6 @@ import java.util.Date;
  * @date : 2025-05-03
  */
 public class BaseEntity {
-
-    @ApiModelProperty("租户号")
-    private String tenantId;
     
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("创建人")
@@ -30,4 +28,11 @@ public class BaseEntity {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    @ApiModelProperty("是否删除")
+    @TableLogic
+    private Boolean deleted;
+
+    @ApiModelProperty("租户号")
+    private String tenantId;
 }

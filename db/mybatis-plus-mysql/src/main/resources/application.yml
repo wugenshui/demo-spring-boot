@@ -17,7 +17,6 @@ spring:
 mybatis-plus:
   executorType: BATCH
 
-
 # 打印执行sql日志
 logging:
   level:
