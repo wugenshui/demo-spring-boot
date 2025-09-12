@@ -29,9 +29,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public List<Student> or() {
-        return lambdaQuery().and(i -> i.and(j -> j.eq(Student::getGender, 1))
+        return lambdaQuery()
+                .and(i -> i.eq(Student::getGender, 1))
                 .or(j -> j.eq(Student::getClassId, "31").eq(Student::getGender, 0))
-        ).list();
+                .list();
     }
 
     public List<Student> ignoreTenantWay1() {
