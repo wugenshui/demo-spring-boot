@@ -10,8 +10,9 @@ import com.baomidou.mybatisplus.core.toolkit.Sequence;
 public class IdGeneratorTest {
     public static void main(String[] args) {
         // 推荐使用，19位，顺序
+        Sequence sequence = new Sequence(null);
         for (int i = 0; i < 10; i++) {
-            System.out.println("nextId = " + new Sequence(null).nextId());
+            System.out.println("nextId = " + sequence.nextId());
         }
         // 长度太长，适合做分布式ID
         for (int i = 0; i < 10; i++) {
