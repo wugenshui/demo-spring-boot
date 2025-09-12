@@ -16,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author chenbo
- * @since 2025-09-11
+ * @since 2025-09-12
  */
 @Getter
 @Setter
@@ -53,7 +53,7 @@ public class Student extends BaseEntity {
      * 性别;0=男，1=女
      */
     @ApiModelProperty("性别;0=男，1=女")
-    private Byte gender;
+    private Integer gender;
 
     /**
      * 出生日期

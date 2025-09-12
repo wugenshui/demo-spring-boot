@@ -3,7 +3,9 @@ package com.mybatis.plus.mysql;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.apache.ibatis.type.JdbcType;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -17,6 +19,15 @@ public class CodeGenerator {
     public static void main(String[] args) {
         String projectPath = System.getProperty("user.dir") + "/db/mybatis-plus-mysql/";
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/mybatis-plus-mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8", "root", "root")
+                .dataSourceConfig(builder ->
+                        builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                                    // 兼容旧版本转换成Integer
+                                    if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+                                        return DbColumnType.INTEGER;
+                                    }
+                                    return typeRegistry.getColumnType(metaInfo);
+                                })
+                )
                 .globalConfig(builder -> {
                     builder
                             .author("chenbo") // 设置作者
