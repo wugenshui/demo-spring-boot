@@ -22,6 +22,7 @@ class StudentServiceTest {
     void mybatisPlusMethodTest() {
         Student student = new Student();
         student.setId("1");
+        student.setStudentName("一一");
         //student.setGender(1);
         student.setClassId("31");
         studentService.save(student);

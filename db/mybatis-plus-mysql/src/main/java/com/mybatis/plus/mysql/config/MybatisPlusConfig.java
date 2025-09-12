@@ -33,16 +33,6 @@ public class MybatisPlusConfig {
         return new SnowflakeGenerator();
     }
 
-    /// **
-    // * 默认元对象处理器 Bean
-    // *
-    // * @return 默认元对象处理器
-    // */
-    //@Bean
-    //public MetaObjectHandler defaultMetaObjectHandler() {
-    //    return new DefaultDBFieldHandler(); // 自动填充参数类
-    //}
-
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
