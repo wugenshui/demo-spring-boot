@@ -37,7 +37,7 @@ public class CodeGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "src/main/resources/mapper/"));
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sims_college", "sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
+                    builder.addInclude("sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
                             .addTablePrefix("sims_") // 设置过滤表前缀
                             // 设置实体父类与父类字段
                             .entityBuilder().superClass(BaseEntity.class).addSuperEntityColumns("creater", "create_time", "updater", "update_time", "tenant_id").enableFileOverride().disableSerialVersionUID().enableLombok()

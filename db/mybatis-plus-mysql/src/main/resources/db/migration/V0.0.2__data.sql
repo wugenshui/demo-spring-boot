@@ -1,18 +1,10 @@
-DELETE FROM sims_college where 1=1;
-DELETE FROM sims_teacher where 1=1;
-DELETE FROM sims_student where 1=1;
+INSERT INTO sims_class (id, class_name, creater, create_time, updater, update_time, tenant_id) VALUES('31', '高三一班', 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
+INSERT INTO sims_class (id, class_name, creater, create_time, updater, update_time, tenant_id) VALUES('32', '高三二班', 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
 
-INSERT INTO SIMS_CLASS(CLASS_ID, CLASS_NAME) VALUES('9527', '鲁班');
+INSERT INTO sims_student (id, class_id, student_name, phone, gender, birth, entry_date, remark, creater, create_time, updater, update_time, tenant_id) VALUES('3', '31', '张三', '', 0, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
+INSERT INTO sims_student (id, class_id, student_name, phone, gender, birth, entry_date, remark, creater, create_time, updater, update_time, tenant_id) VALUES('4', '31', '李四', '', 0, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
+INSERT INTO sims_student (id, class_id, student_name, phone, gender, birth, entry_date, remark, creater, create_time, updater, update_time, tenant_id) VALUES('5', '32', '王五', '', 1, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
+INSERT INTO sims_student (id, class_id, student_name, phone, gender, birth, entry_date, remark, creater, create_time, updater, update_time, tenant_id) VALUES('6', '32', '何六', '', 1, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
 
-INSERT INTO sims_college (COLLEGE_ID, COLLEGE_NAME) VALUES('1', '金鹰学院');
-INSERT INTO sims_college (COLLEGE_ID, COLLEGE_NAME) VALUES('2', '频繁学院');
-
-INSERT INTO sims_teacher (COLLEGE_ID, TEACHER_ID, TEACHER_NAME) VALUES('1', '111', '金应');
-INSERT INTO sims_teacher (COLLEGE_ID, TEACHER_ID, TEACHER_NAME) VALUES('2', '211', '平樊');
-
-INSERT INTO sims_student (COLLEGE_ID, CLASS_ID, STUDENT_ID, STUDENT_NAME)
-VALUES('1', '11', '1111', '张三');
-INSERT INTO sims_student (COLLEGE_ID, CLASS_ID, STUDENT_ID, STUDENT_NAME)
-VALUES('1', '11', '1112', '李四');
-INSERT INTO sims_student (COLLEGE_ID, CLASS_ID, STUDENT_ID, STUDENT_NAME)
-VALUES('2', '21', '2111', '王五');
+INSERT INTO sims_teacher (id, class_id, teacher_name, phone, gender, birth, remark, monthly_pay, creater, create_time, updater, update_time, tenant_id) VALUES('331', '31', '散宜生', NULL, 0, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');
+INSERT INTO sims_teacher (id, class_id, teacher_name, phone, gender, birth, remark, monthly_pay, creater, create_time, updater, update_time, tenant_id) VALUES('332', '32', '石勇', NULL, 0, NULL, NULL, NULL, 'admin', '2025-09-11 00:00:00', 'admin', '2025-09-11 00:00:00', '0');

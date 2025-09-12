@@ -1,6 +1,5 @@
 package com.mybatis.plus.mysql.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mybatis.plus.mysql.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -28,23 +26,16 @@ import java.util.Date;
 public class Student extends BaseEntity {
 
     /**
-     * 所在学院ID
+     * 主键
      */
-    @ApiModelProperty("所在学院ID")
-    private String collegeId;
+    @ApiModelProperty("主键")
+    private String id;
 
     /**
-     * 所在班级ID
+     * 班级ID
      */
-    @ApiModelProperty("所在班级ID")
+    @ApiModelProperty("班级ID")
     private String classId;
-
-    /**
-     * 学生ID
-     */
-    @TableId("STUDENT_ID")
-    @ApiModelProperty("学生ID")
-    private String studentId;
 
     /**
      * 学生姓名
@@ -53,34 +44,16 @@ public class Student extends BaseEntity {
     private String studentName;
 
     /**
-     * 英文名
-     */
-    @ApiModelProperty("英文名")
-    private String engName;
-
-    /**
-     * 身份证号
-     */
-    @ApiModelProperty("身份证号")
-    private String idCardNo;
-
-    /**
      * 手机号
      */
     @ApiModelProperty("手机号")
-    private String mobilePhone;
+    private String phone;
 
     /**
-     * 性别
+     * 性别;0=男，1=女
      */
-    @ApiModelProperty("性别")
-    private String gender;
-
-    /**
-     * 月薪
-     */
-    @ApiModelProperty("月薪")
-    private BigDecimal monthlySalary;
+    @ApiModelProperty("性别;0=男，1=女")
+    private Byte gender;
 
     /**
      * 出生日期
@@ -89,98 +62,14 @@ public class Student extends BaseEntity {
     private Date birth;
 
     /**
-     * 头像
-     */
-    @ApiModelProperty("头像")
-    private Integer avatar;
-
-    /**
-     * 身高
-     */
-    @ApiModelProperty("身高")
-    private Integer height;
-
-    /**
-     * 体重
-     */
-    @ApiModelProperty("体重")
-    private Integer weight;
-
-    /**
-     * 名族
-     */
-    @ApiModelProperty("名族")
-    private String nation;
-
-    /**
-     * 政治面貌
-     */
-    @ApiModelProperty("政治面貌")
-    private String political;
-
-    /**
-     * 婚姻状况
-     */
-    @ApiModelProperty("婚姻状况")
-    private String marital;
-
-    /**
-     * 籍贯（省）
-     */
-    @ApiModelProperty("籍贯（省）")
-    private String domicilePlaceProvince;
-
-    /**
-     * 籍贯（市）
-     */
-    @ApiModelProperty("籍贯（市）")
-    private String domicilePlaceCity;
-
-    /**
-     * 户籍地址
-     */
-    @ApiModelProperty("户籍地址")
-    private String domicilePlaceAddress;
-
-    /**
-     * 爱好
-     */
-    @ApiModelProperty("爱好")
-    private String hobby;
-
-    /**
-     * 简要介绍
-     */
-    @ApiModelProperty("简要介绍")
-    private String intro;
-
-    /**
-     * 居住地址
-     */
-    @ApiModelProperty("居住地址")
-    private String presentAddress;
-
-    /**
-     * 电子邮件
-     */
-    @ApiModelProperty("电子邮件")
-    private String email;
-
-    /**
      * 入学日期
      */
     @ApiModelProperty("入学日期")
     private Date entryDate;
 
     /**
-     * 状态
+     * 备注
      */
-    @ApiModelProperty("状态")
-    private String status;
-
-    /**
-     * 乐观锁
-     */
-    @ApiModelProperty("乐观锁")
-    private Integer revision;
+    @ApiModelProperty("备注")
+    private String remark;
 }
