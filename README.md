@@ -20,7 +20,6 @@ mvn clean package deploy
 # storepass 密钥库口令
 keytool -genkeypair -alias practice -keyalg RSA -keypass practice -keystore practice.jks -storepass practice -validity 1000
 
-
 # 下载openssl工具
 windows版本： http://slproweb.com/products/Win32OpenSSL.html
 
