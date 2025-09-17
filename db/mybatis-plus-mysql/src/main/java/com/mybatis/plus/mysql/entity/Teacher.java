@@ -1,14 +1,15 @@
 package com.mybatis.plus.mysql.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mybatis.plus.mysql.BaseEntity;
-import java.io.Serializable;
-import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -16,59 +17,54 @@ import lombok.Setter;
  * </p>
  *
  * @author chenbo
- * @since 2025-05-03
+ * @since 2025-09-12
  */
 @Getter
 @Setter
+@ToString
 @TableName("sims_teacher")
 @ApiModel(value = "Teacher对象", description = "教师")
 public class Teacher extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 班级ID
+     */
+    @ApiModelProperty("班级ID")
+    private String classId;
 
-    @ApiModelProperty("所在学院ID")
-    private String collegeId;
-
-    @ApiModelProperty("教师ID")
-    @TableId("TEACHER_ID")
-    private String teacherId;
-
+    /**
+     * 姓名
+     */
     @ApiModelProperty("姓名")
     private String teacherName;
 
-    @ApiModelProperty("性别")
-    private String gender;
+    /**
+     * 手机号
+     */
+    @ApiModelProperty("手机号")
+    private String phone;
 
+    /**
+     * 性别;0=男，1=女
+     */
+    @ApiModelProperty("性别;0=男，1=女")
+    private Integer gender;
+
+    /**
+     * 出生日期
+     */
     @ApiModelProperty("出生日期")
     private Date birth;
 
-    @ApiModelProperty("毕业院校")
-    private String graduateInstitution;
+    /**
+     * 备注
+     */
+    @ApiModelProperty("备注")
+    private String remark;
 
-    @ApiModelProperty("从业年限")
-    private Integer practiceYears;
-
-    @ApiModelProperty("政治面貌")
-    private String political;
-
-    @ApiModelProperty("婚姻状况")
-    private String marital;
-
-    @ApiModelProperty("头像")
-    private String avatar;
-
-    @ApiModelProperty("介绍")
-    private String intro;
-
-    @ApiModelProperty("租户号")
-    private String tenantId;
-
-    @ApiModelProperty("乐观锁")
-    private Integer revision;
-
-    @ApiModelProperty("创建时间")
-    private Date createTime;
-
-    @ApiModelProperty("更新时间")
-    private Date updateTime;
+    /**
+     * 月薪
+     */
+    @ApiModelProperty("月薪")
+    private BigDecimal monthlyPay;
 }
