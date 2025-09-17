@@ -10,7 +10,6 @@ mvn clean package deploy
 
 
 ### JWT密钥生成命令
-
 ```
 # 生成私钥文件
 # alias 别名
