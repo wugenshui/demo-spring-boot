@@ -29,6 +29,8 @@ public class DateUtilTest {
 
         System.out.println("当前时间 = " + DateUtil.now());
         System.out.println("当天 = " + DateUtil.today());
+        System.out.println("昨天 = " + DateUtil.yesterday());
+        System.out.println("明天 = " + DateUtil.tomorrow());
         System.out.println("时间戳 = " + DateUtil.date().getTime() + " : " + DateUtil.current());
         System.out.println("时间转换 = " + DateUtil.date(Long.parseLong(String.valueOf(DateUtil.current()))));
 
