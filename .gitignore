@@ -42,3 +42,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/ai/spring-ai-demo/src/main/resources/application-local.yaml

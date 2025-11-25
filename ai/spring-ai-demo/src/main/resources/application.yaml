@@ -1,0 +1,11 @@
+spring:
+  ai:
+    openai:
+      base-url: https://api.moonshot.cn  #配置chat的ak
+      api-key: sk-
+      chat:
+        completions-path: /v1/chat/completions #配置chant的接口路径
+        options:
+          model: kimi-k2-0905-preview
+          temperature: 0.6
+
