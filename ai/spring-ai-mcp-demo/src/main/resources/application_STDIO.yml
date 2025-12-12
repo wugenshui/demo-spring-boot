@@ -1,0 +1,21 @@
+spring:
+  main:
+    banner-mode: off # 表示关闭 Spring Boot 启动时的横幅显示。保持控制台简洁
+    web-application-type: none # none 启动方式 不启动web容器
+  ai:
+    mcp:
+      server:
+        enabled: true  # 启用MCP Server（默认true）
+        stdio: true    # 启用STDIO传输（核心开关）
+        name: stdio-time-server  # 服务器名称（标识用）
+        version: 1.0.0 # 服务器版本
+        type: SYNC     # 同步模式（可选ASYNC，需Reactor依赖）
+        # 能力开关（默认全开启，可按需关闭）
+        capabilities:
+          tool: true    # 启用工具能力
+          resource: true# 启用资源能力
+          prompt: true  # 启用Prompt能力
+        request-timeout: 30s # 请求超时时间（默认20s）
+
+
+

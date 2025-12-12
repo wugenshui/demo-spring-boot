@@ -1,0 +1,18 @@
+spring:
+  ai:
+    mcp:
+      server:
+        enabled: true
+        name: sse-time-server
+        version: 1.0.0
+        type: SYNC    # WebFlux推荐用ASYNC异步模式(但是我使用异步时不能正确解析返回的信息)
+        instructions: "这个是一个提供时间信息的工具和资源"
+        capabilities:
+          tool: true
+          resource: true
+          prompt: true
+          completion: true
+        # sse properties
+        sse-endpoint: /mcp/sse
+        sse-message-endpoint: /mcp/messages
+        keep-alive-interval: 30s

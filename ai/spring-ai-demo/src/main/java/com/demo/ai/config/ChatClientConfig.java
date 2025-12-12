@@ -17,8 +17,9 @@ import org.springframework.context.annotation.Configuration;
 public class ChatClientConfig {
     @Autowired
     private ToolCallbackProvider tools;
+
     @Autowired
-    OpenAiChatModel chatModel;
+    private OpenAiChatModel chatModel;
 
     @Bean
     public CommandLineRunner predefinedQuestions(
@@ -26,6 +27,7 @@ public class ChatClientConfig {
         return args -> {
             // 构建ChatClient,此时不注入任何工具
             var chatClient = ChatClient.builder(chatModel)
+                    .defaultTools(tools.getToolCallbacks())
                     .build();
             String userInput = "你是谁"; // 帮我将这个网页内容进行抓取 https://www.shuaijiao.cn/news/view/68320.html
             System.out.println("\n>>> QUESTION: " + userInput);

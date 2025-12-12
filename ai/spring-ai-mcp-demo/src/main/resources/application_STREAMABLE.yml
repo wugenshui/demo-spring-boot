@@ -1,0 +1,17 @@
+spring:
+  ai:
+    mcp:
+      server:
+        name: time-streamable-mcp
+        version: 1.0.0
+        type: SYNC #Server type (SYNC/ASYNC)  服务器类型（同步/异步）
+        instructions: "这个是一个提供时间信息的工具和资源"
+        request-timeout: 5000 #请求超时时间（毫秒）
+
+        protocol: STREAMABLE #必须设置为 STREAMABLE 以启用流式服务器
+        #        protocol: STATELESS #必须设置为 STATELESS 才能启用无状态服务器
+        # Streamable-HTTP特有配置
+        streamable-http:
+          mcp-endpoint: /mcp
+          keep-alive-interval: 30s # 连接保活,表示每 30 秒发送一次心跳包
+

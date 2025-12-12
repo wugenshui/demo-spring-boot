@@ -8,4 +8,15 @@ spring:
         options:
           model: kimi-k2-0905-preview
           temperature: 0.6
-
+    mcp:
+      client:
+        name: ai-demo
+        type: SYNC
+        request-timeout: 30000
+        enabled: true
+        toolcallback:
+          enabled: true
+        sse:
+          connections:
+            server1:
+              url: https://mcp-09724909-442f-4b85.api-inference.modelscope.cn
