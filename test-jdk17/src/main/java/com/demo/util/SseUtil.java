@@ -104,7 +104,7 @@ public class SseUtil {
                             // data 或 event 不为空
                             if (!eventData.isEmpty() || StrUtil.isNotEmpty(event)) {
                                 String finalData = eventData.toString();
-                                log.info("SSE 事件[{}] 数据: {}", event, finalData);
+                                log.info("SSE 事件[{}] 数据:{}", event, finalData);
                                 SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
                                 if (StrUtil.isNotEmpty(event)) {
                                     eventBuilder.name(event);
