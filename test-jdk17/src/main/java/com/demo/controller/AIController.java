@@ -69,7 +69,8 @@ public class AIController {
         // 超时时间设置为3s，用于演示客户端自动重连
         SseEmitter emitter = new SseEmitter(30000L);
         // 设置前端的重试时间为1s
-        emitter.send(SseEmitter.event().reconnectTime(1000).data("连接成功"));
+        emitter.send(SseEmitter.event().reconnectTime(1000));
+        emitter.send(SseEmitter.event().name("我的事件"));
         emitter.send(SseEmitter.event().data("立即发送第一条消息"));
         new Thread(() -> {
             try {

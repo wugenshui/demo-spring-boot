@@ -53,7 +53,7 @@ public class SseUtil {
                 t.setDaemon(true);
                 return t;
             },
-            new ThreadPoolExecutor.AbortPolicy() // 拒绝策略：由调用者线程执行（可选）
+            new ThreadPoolExecutor.AbortPolicy() // 明确拒绝策略：当队列满且线程数达上限时，直接抛出异常
     );
 
     /**
@@ -104,7 +104,7 @@ public class SseUtil {
                             // data 或 event 不为空
                             if (!eventData.isEmpty() || StrUtil.isNotEmpty(event)) {
                                 String finalData = eventData.toString();
-                                log.debug("SSE 事件[{}] 数据: {}", event, finalData);
+                                log.info("SSE 事件[{}] 数据: {}", event, finalData);
                                 SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
                                 if (StrUtil.isNotEmpty(event)) {
                                     eventBuilder.name(event);
@@ -116,7 +116,7 @@ public class SseUtil {
                                 event = "";
                             }
                         } else if (line.startsWith(DATA_PREFIX)) {
-                            String data = line.substring(DATA_PREFIX.length()); // 安全截取
+                            String data = line.substring(DATA_PREFIX.length());
                             if (!data.isEmpty()) {
                                 eventData.append(data);
                             }
