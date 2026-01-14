@@ -1,18 +1,15 @@
 package com.demo.util;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,11 +32,8 @@ public class SseUtil {
     // 事件名称常量
     private static final String EVENT_ERROR = "error";
     private static final String EVENT_RAW = "raw";
-    private static final String EVENT_DONE = "done";
-    private static final String EVENT_MESSAGE = "message";
     // 其他常量
-    private static final String DATA_PREFIX = "data: ";
-    private static final String DONE_MARKER = "[DONE]";
+    private static final String DATA_PREFIX = "data:";
     /**
      * 线程池
      */
@@ -69,81 +63,47 @@ public class SseUtil {
         });
 
         SSE_PROXY_THREAD_POOL.submit(() -> {
-            try {
-                // 定义处理响应方法
-                ResponseHandler<Boolean> responseHandler = response -> {
-                    try {
-                        if (response.getStatusLine().getStatusCode() != HttpStatus.OK.value()) {
-                            log.error("请求大模型错误: {}", response.getStatusLine().getStatusCode());
-                            emitter.send(SseEmitter.event().name(EVENT_ERROR).data("请求失败: " + response.getStatusLine().getStatusCode()).build());
-                            emitter.complete();
-                            return false;
-                        } else {
-                            try (InputStream stream = response.getEntity().getContent();
-                                 Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-                                 BufferedReader bufferedReader = new BufferedReader(reader)) {
-                                String line;
-                                while ((line = bufferedReader.readLine()) != null) {
-                                    log.info("收到响应行: {}", line);
-                                    if (line.trim().isEmpty()) {
-                                        // 忽略空行
-                                        continue;
-                                    } else if (line.startsWith(DATA_PREFIX)) {
-                                        String data = line.substring(6);
-                                        if (DONE_MARKER.equals(data)) {
-                                            emitter.send(SseEmitter.event().name(EVENT_DONE).data("").build());
-                                            emitter.complete();
-                                            return true;
-                                        }
-                                        if (!data.isEmpty()) {
-                                            emitter.send(SseEmitter.event().name(EVENT_MESSAGE).data(data).build());
-                                        }
-                                    } else {
-                                        // 发送原始数据
-                                        emitter.send(SseEmitter.event().name(EVENT_RAW).data(line).build());
-                                    }
-                                }
-                                // 流结束后发送完成信号
-                                emitter.send(SseEmitter.event().name(EVENT_DONE).data("对话完成").build());
-                                emitter.complete();
-                                return true;
-                            }
-                        }
-                    } catch (Exception e) {
-                        log.error("读取响应错误", e);
-                        try {
-                            emitter.send(SseEmitter.event().name(EVENT_ERROR).data("读取响应错误: " + e.getMessage()).build());
-                        } catch (Exception sendError) {
-                            log.error("发送错误消息失败", sendError);
-                        }
-                        emitter.complete();
-                        return false;
-                    }
-                };
+            try (HttpResponse response = HttpRequest.post(url)
+                    .addHeaders(headers)
+                    .body(body.toString())
+                    .setConnectionTimeout(30000) // 设置连接超时时间
+                    .timeout(0) // 设置超时为 0 表示不超时（适用于 SSE 长连接）
+                    .execute()) {
 
-                // 发起请求
-                HttpPost post = new HttpPost(url);
-                if (headers != null) {
-                    headers.forEach(post::addHeader);
+                int statusCode = response.getStatus();
+                if (statusCode != HttpStatus.OK.value()) {
+                    sendErrorAndComplete(emitter, String.format("SSE 请求错误，状态码: %s", statusCode), null);
+                    return;
                 }
-                try (CloseableHttpClient client = HttpClients.createDefault()) {
-                    StringEntity entity = new StringEntity(body.toString(), StandardCharsets.UTF_8.name());
-                    post.setEntity(entity);
-                    CloseableHttpResponse execute = client.execute(post);
-                    try (CloseableHttpResponse response = execute) {
-                        responseHandler.handleResponse(response);
+
+                // 获取原始输入流（SSE 是文本流，按行读取）
+                try (InputStream inputStream = response.bodyStream();
+                     Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                     BufferedReader bufferedReader = new BufferedReader(reader)) {
+
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        log.info("收到响应行: {}", line);
+
+                        if (line.trim().isEmpty()) {
+                            // 忽略空行
+                        } else if (line.startsWith(DATA_PREFIX)) {
+                            String data = line.substring(DATA_PREFIX.length()); // 安全截取
+                            if (!data.isEmpty()) {
+                                emitter.send(SseEmitter.event().data(data).build());
+                            }
+                        } else {
+                            // 非 data: 开头的行（如 event:, id:, retry: 或自定义内容）
+                            emitter.send(SseEmitter.event().name(EVENT_RAW).data(line).build());
+                        }
                     }
-                } catch (Exception e) {
-                    log.error("sse 接口请求异常");
+
+                    // 正常结束流
+                    emitter.complete();
+
+                } catch (IOException e) {
+                    sendErrorAndComplete(emitter, "SSE 代理异常: " + e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                log.error("请求大模型错误", e);
-                try {
-                    emitter.send(SseEmitter.event().name(EVENT_ERROR).data("请求错误: " + e.getMessage()).build());
-                } catch (Exception sendError) {
-                    log.error("发送错误消息失败", sendError);
-                }
-                emitter.complete();
             }
         });
 
@@ -151,22 +111,36 @@ public class SseUtil {
     }
 
     /**
+     * 发送错误消息并完成
+     *
+     * @param emitter   发送者
+     * @param errorMsg  错误信息
+     * @param exception 异常,只会记录到本地日志中，可为空
+     *
+     */
+    private static void sendErrorAndComplete(SseEmitter emitter, String errorMsg, Exception exception) {
+        log.error(errorMsg, exception);
+        try {
+            emitter.send(SseEmitter.event().name(EVENT_ERROR).data(errorMsg).build());
+        } catch (IOException e) {
+            log.error("sendErrorAndComplete error", e);
+        }
+        emitter.complete();
+    }
+
+    /**
      * 智能体应用
      */
     public static SseEmitter proxyAPI1() {
-        JSONObject body = JSONUtil.parseObj(Map.of(
-                "appId", "613564319623282688",
-                "stream", true,
-                "chatId", "001",
-                "caller", "test",
-                "replyOrigin", 1,
-                "messages", List.of(Map.of(
-                        "role", "user",
-                        "content", "你是"
-                ))
-        ));
+        JSONObject body = JSONUtil.createObj()
+                .set("appId", "613564319623282688")
+                .set("stream", true)
+                .set("chatId", "001")
+                .set("caller", "test")
+                .set("replyOrigin", 1)
+                .set("messages", List.of(Map.of("role", "user", "content", "你是")));
 
-        HashMap<String, String> headers = new HashMap();
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "hwllm-611026796183289856ldNl3ha");
         headers.put("Content-Type", "application/json;charset=UTF-8");
 
@@ -177,16 +151,12 @@ public class SseUtil {
      * 大模型
      */
     public static SseEmitter proxyAPI() {
-        JSONObject body = JSONUtil.parseObj(Map.of(
-                "model", "Qwen3-30B-A3B",
-                "stream", true,
-                "messages", List.of(Map.of(
-                        "role", "user",
-                        "content", "你是"
-                ))
-        ));
+        JSONObject body = JSONUtil.createObj()
+                .set("model", "Qwen3-30B-A3B")
+                .set("stream", true)
+                .set("messages", List.of(Map.of("role", "user", "content", "你是")));
 
-        HashMap<String, String> headers = new HashMap();
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "sk-");
         headers.put("Content-Type", "application/json;charset=UTF-8");
 
