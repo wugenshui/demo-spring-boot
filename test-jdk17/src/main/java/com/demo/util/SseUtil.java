@@ -3,7 +3,6 @@ package com.demo.util;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -14,11 +13,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * SSE 代理工具类
@@ -29,6 +28,11 @@ import java.util.concurrent.Executors;
  */
 @Slf4j
 public class SseUtil {
+
+    /**
+     * 最大可创建线程数，根据业务负载调整
+     */
+    private static final int MAXIMUM_POOL_SIZE = 50;
     // 事件名称常量
     private static final String EVENT_ERROR = "error";
     private static final String EVENT_RAW = "raw";
@@ -37,11 +41,18 @@ public class SseUtil {
     /**
      * 线程池
      */
-    private static final ExecutorService SSE_PROXY_THREAD_POOL = Executors.newCachedThreadPool(r -> {
-        Thread t = new Thread(r, "sse-proxy-thread");
-        t.setDaemon(true);
-        return t;
-    });
+    private static final ExecutorService SSE_PROXY_THREAD_POOL = new ThreadPoolExecutor(
+            5,
+            MAXIMUM_POOL_SIZE,
+            10, TimeUnit.MINUTES,
+            new LinkedBlockingQueue<>(MAXIMUM_POOL_SIZE), // 有界队列，防止无限堆积
+            r -> {
+                Thread t = new Thread(r, "sse-proxy");
+                t.setDaemon(true);
+                return t;
+            },
+            new ThreadPoolExecutor.AbortPolicy() // 拒绝策略：由调用者线程执行（可选）
+    );
 
     /**
      * 代理远程 SSE 流到本地 SseEmitter
@@ -83,16 +94,16 @@ public class SseUtil {
 
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        log.info("收到响应行: {}", line);
-
                         if (line.trim().isEmpty()) {
                             // 忽略空行
                         } else if (line.startsWith(DATA_PREFIX)) {
                             String data = line.substring(DATA_PREFIX.length()); // 安全截取
+                            log.info("收到数据行: {}", line);
                             if (!data.isEmpty()) {
                                 emitter.send(SseEmitter.event().data(data).build());
                             }
                         } else {
+                            log.info("收到其它行: {}", line);
                             // 非 data: 开头的行（如 event:, id:, retry: 或自定义内容）
                             emitter.send(SseEmitter.event().name(EVENT_RAW).data(line).build());
                         }
@@ -126,40 +137,5 @@ public class SseUtil {
             log.error("sendErrorAndComplete error", e);
         }
         emitter.complete();
-    }
-
-    /**
-     * 智能体应用
-     */
-    public static SseEmitter proxyAPI1() {
-        JSONObject body = JSONUtil.createObj()
-                .set("appId", "613564319623282688")
-                .set("stream", true)
-                .set("chatId", "001")
-                .set("caller", "test")
-                .set("replyOrigin", 1)
-                .set("messages", List.of(Map.of("role", "user", "content", "你是")));
-
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "hwllm-611026796183289856ldNl3ha");
-        headers.put("Content-Type", "application/json;charset=UTF-8");
-
-        return proxySseStream("https://ai.test.com/api/chat/api/v1/chat/completions", body, headers);
-    }
-
-    /**
-     * 大模型
-     */
-    public static SseEmitter proxyAPI() {
-        JSONObject body = JSONUtil.createObj()
-                .set("model", "Qwen3-30B-A3B")
-                .set("stream", true)
-                .set("messages", List.of(Map.of("role", "user", "content", "你是")));
-
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "sk-");
-        headers.put("Content-Type", "application/json;charset=UTF-8");
-
-        return proxySseStream("http://nginx.llm.test.com:30000/api/qwen3/v1/chat/completions", body, headers);
     }
 }
