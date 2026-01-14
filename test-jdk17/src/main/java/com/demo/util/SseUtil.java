@@ -1,5 +1,6 @@
 package com.demo.util;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONObject;
@@ -33,11 +34,12 @@ public class SseUtil {
      * 最大可创建线程数，根据业务负载调整
      */
     private static final int MAXIMUM_POOL_SIZE = 50;
+
     // 事件名称常量
     private static final String EVENT_ERROR = "error";
-    private static final String EVENT_RAW = "raw";
-    // 其他常量
     private static final String DATA_PREFIX = "data:";
+    private static final String EVENT_PREFIX = "event:";
+
     /**
      * 线程池
      */
@@ -92,20 +94,37 @@ public class SseUtil {
                      Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                      BufferedReader bufferedReader = new BufferedReader(reader)) {
 
+                    StringBuilder eventData = new StringBuilder();
+                    String event = ""; // 默认事件类型
+
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
+                        // 空行 → 事件结束，发送
                         if (line.trim().isEmpty()) {
-                            // 忽略空行
+                            // data 或 event 不为空
+                            if (!eventData.isEmpty() || StrUtil.isNotEmpty(event)) {
+                                String finalData = eventData.toString();
+                                log.debug("SSE 事件[{}] 数据: {}", event, finalData);
+                                SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
+                                if (StrUtil.isNotEmpty(event)) {
+                                    eventBuilder.name(event);
+                                }
+                                emitter.send(eventBuilder.data(finalData).build());
+
+                                // 重置事件字段
+                                eventData.setLength(0);
+                                event = "";
+                            }
                         } else if (line.startsWith(DATA_PREFIX)) {
                             String data = line.substring(DATA_PREFIX.length()); // 安全截取
-                            log.info("收到数据行: {}", line);
                             if (!data.isEmpty()) {
-                                emitter.send(SseEmitter.event().data(data).build());
+                                eventData.append(data);
                             }
+                        } else if (line.startsWith(EVENT_PREFIX)) {
+                            event = line.substring(EVENT_PREFIX.length());
                         } else {
-                            log.info("收到其它行: {}", line);
-                            // 非 data: 开头的行（如 event:, id:, retry: 或自定义内容）
-                            emitter.send(SseEmitter.event().name(EVENT_RAW).data(line).build());
+                            //（如 id:, retry: 或自定义内容）
+                            log.info("不支持的格式: {}", line);
                         }
                     }
 
