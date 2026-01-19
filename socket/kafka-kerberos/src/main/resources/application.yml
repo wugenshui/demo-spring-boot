@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.3.25:9092
+    properties:
+      security.protocol: SASL_PLAINTEXT  # 或 SASL_SSL（如果启用了 TLS）
+      sasl.mechanism: GSSAPI
+      sasl.kerberos.service.name: kafka  # Kafka broker 的 service principal 名称（通常是 kafka）
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: your-consumer-group
