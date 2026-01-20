@@ -17,5 +17,6 @@ public class TopicListener {
     @KafkaListener(topics = TOPIC1)
     public void processMessage(String content) {
         log.info("{}：接收到消息={}", TOPIC1, content);
+        //throw new RuntimeException("测试异常，消费确认不通过，可以继续重新消费");
     }
 }

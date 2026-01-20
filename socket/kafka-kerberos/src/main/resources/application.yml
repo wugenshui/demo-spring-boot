@@ -5,11 +5,11 @@ spring:
       security.protocol: SASL_PLAINTEXT
       sasl.mechanism: GSSAPI
       sasl.kerberos.service.name: kafka
-      sasl.kerberos.service.principal.instance: 192.168.3.25
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: your-consumer-group
+      group-id: test_consumer_group_1
+      #auto-offset-reset: earliest   # 从最早可用消息开始消费
