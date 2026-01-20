@@ -12,6 +12,7 @@
     <artifactId>kafka-kerberos</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
     <url/>
     <licenses>
         <license/>
