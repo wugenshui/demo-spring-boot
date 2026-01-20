@@ -2,9 +2,10 @@ spring:
   kafka:
     bootstrap-servers: 192.168.3.25:9092
     properties:
-      security.protocol: SASL_PLAINTEXT  # 或 SASL_SSL（如果启用了 TLS）
+      security.protocol: SASL_PLAINTEXT
       sasl.mechanism: GSSAPI
-      sasl.kerberos.service.name: kafka  # Kafka broker 的 service principal 名称（通常是 kafka）
+      sasl.kerberos.service.name: kafka
+      sasl.kerberos.service.principal.instance: 192.168.3.25
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
