@@ -26,15 +26,36 @@ public class TopicListener {
      * 消息分割与展示
      */
     public void handleMessage(String content, int wantedCount) {
-        if (StrUtil.isNotEmpty(content)) {
-            String[] splitMark = new String[]{"\u001B"};
-            for (String mark : splitMark) {
-                String[] splits = content.split(mark, -1);
-                log.info("表字段数：{}，使用{}将文本拆分为{}块", wantedCount, mark, splits.length);
-                for (int i = 0; i < splits.length; i++) {
-                    log.info("第{}块：{}", i, splits[i]);
+        if (StrUtil.isEmpty(content)) {
+            return;
+        }
+
+        String mark = "\u001B";
+        String[] splits = content.split(mark, -1);
+
+        log.info("表字段数：{}，使用 {} 将文本拆分为 {} 块", wantedCount, mark, splits.length);
+
+        // 每行最多打印 10 个字段
+        int batchSize = 10;
+        for (int start = 0; start < splits.length; start += batchSize) {
+            int end = Math.min(start + batchSize, splits.length);
+            StringBuilder line = new StringBuilder();
+            for (int i = start; i < end; i++) {
+                String val = splits[i];
+                // 将 "/N" 转为空字符串
+                if ("\\N".equals(val)) {
+                    val = "";
+                } else {
+                    // 可选：对特殊字符或长内容做安全截断（如需要）
+                    // val = StrUtil.maxLength(val, 30);
+                    line.append("[").append(i + 1).append("]=").append(val).append(", ");
                 }
             }
+            // 去掉末尾多余的 ", "
+            if (line.length() > 2) {
+                line.setLength(line.length() - 2);
+            }
+            log.info("字段 {} ～ {}：{}", start + 1, end, line);
         }
     }
 }
