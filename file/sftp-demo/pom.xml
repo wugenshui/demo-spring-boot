@@ -36,6 +36,8 @@
                         </goals>
 
                         <configuration>
+                            <!-- 工具项目，无需生成精简pom -->
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <!-- 关键：不要写 resource / resources -->
                             <transformers>
                                 <transformer
