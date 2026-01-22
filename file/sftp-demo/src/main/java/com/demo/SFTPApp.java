@@ -181,7 +181,7 @@ public class SFTPApp {
         System.out.println("  -op download -remote <path> -localDir <localDir> [-r]");
         System.out.println("    -remote, --remotePath  远程文件或目录路径");
         System.out.println("    -localDir              本地保存目录 (默认: /tmp)");
-        System.out.println("    -r, --recursive        若 remote 是目录, 是否递归下载子目录 (默认: true)");
+        System.out.println("    -r, --recursive        若 remote 是目录, 是否递归下载子目录 (默认不递归)");
         System.out.println();
         System.out.println("[upload] 上传单个文件:");
         System.out.println("  -op upload -localFile <file> -remoteDir <remoteDir>");
