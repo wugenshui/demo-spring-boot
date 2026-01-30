@@ -17,7 +17,7 @@ import java.util.HashMap;
  */
 public class CodeGenerator {
     public static void main(String[] args) {
-        String projectPath = System.getProperty("user.dir") + "/db/mybatis-plus-mysql/";
+        String projectPath = System.getProperty("user.dir") + "/db/mybatis-plus-mysql"; // 后面的一段可以删除
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/mybatis-plus-mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8", "root", "root")
                 .dataSourceConfig(builder ->
                         builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
@@ -34,7 +34,7 @@ public class CodeGenerator {
                             .enableSwagger()
                             .disableOpenDir()
                             .dateType(DateType.ONLY_DATE)
-                            .outputDir(projectPath + "src/main/java");
+                            .outputDir(projectPath + "/src/main/java");
                 })
                 .packageConfig(builder -> {
                     builder
@@ -45,7 +45,7 @@ public class CodeGenerator {
                             .service("service")
                             .serviceImpl("service.impl")
                             .xml("mapper.xml")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "src/main/resources/mapper/"));
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/resources/mapper/"));
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sims_class", "sims_student", "sims_teacher") // 设置需要生成的表名
