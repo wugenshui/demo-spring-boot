@@ -1,7 +1,6 @@
 package com.github.wugenshui.baseutil.baseutil.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -73,6 +72,10 @@ public class DateUtil {
     static {
         dateFormat = new SimpleDateFormat(DATE_FORMAT);
         dateTimeFormat = new SimpleDateFormat(DATETIME_FORMAT);
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
     /**
@@ -194,7 +197,7 @@ public class DateUtil {
     public static Date formatDate(Object obj, String pattern) {
         try {
             String newDate = formatDateString(obj, pattern);
-            if (StringUtils.isBlank(newDate)) {
+            if (isBlank(newDate)) {
                 return null;
             }
             SimpleDateFormat format = new SimpleDateFormat(pattern);
@@ -213,7 +216,7 @@ public class DateUtil {
      */
     public static String formatDateString(Object obj, String pattern) {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
-        if (obj == null || obj.toString() == "" || StringUtils.isBlank(pattern)) {
+        if (obj == null || obj.toString() == "" || isBlank(pattern)) {
             return "";
         } else if (obj instanceof Date) {
             return format.format(obj);
@@ -298,7 +301,7 @@ public class DateUtil {
      * @return
      */
     public static boolean checkData(String data) {
-        if (StringUtils.isBlank(data)) {
+        if (isBlank(data)) {
             return true;
         }
         //整数
