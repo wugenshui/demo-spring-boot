@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaweisoft.jdi2.service.module.unmanned.mapper.UnmannedCarStatusMapper">
+
+
+    <select id="selectLatest" resultType="com.huaweisoft.jdi2.service.module.unmanned.entity.UnmannedCarStatusDo">
+        SELECT
+            LAST(ts) AS ts,
+            vin,
+            current_fuel_level,
+            current_battery_level,
+            ROUND(accumulated_mileage,2) AS accumulatedMileage
+        FROM unmanned_car_status
+        <where>
+            <if test="vin!=null and vin != '' ">
+                vin = #{vin}
+            </if>
+        </where>
+        GROUP BY vin
+    </select>
+
+    <select id="selectListStatus" resultType="com.huaweisoft.jdi2.service.module.unmanned.entity.UnmannedCarStatusDo">
+        SELECT
+            LAST(ts) AS ts,
+            vin,
+            power_on_status,
+            control_model,
+            power_mode,
+            charge_status,
+            lamp_switch_status,
+            battery,
+            current_fuel_level,
+            current_battery_level,
+            ROUND(accumulated_mileage,2) AS accumulatedMileage
+        FROM unmanned_car_status
+        <where>
+            <if test="startTime!=null">
+                AND ts &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND ts &lt; #{endTime}
+            </if>
+        </where>
+        GROUP BY vin
+    </select>
+
+    <insert id="insertRow">
+        INSERT INTO ${subTableName} USING unmanned_car_status TAGS (#{row.vin, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler})
+        (ts, message_id, power_on_status, control_model, power_mode, charge_status, lamp_switch_status,
+         battery, current_fuel_level, current_battery_level, accumulated_mileage, network_form, create_time)
+        VALUES (
+            #{row.ts, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler},
+            #{row.messageId, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler},
+            #{row.powerOnStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.controlModel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.powerMode, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.chargeStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.lampSwitchStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.battery, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.currentFuelLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.currentBatteryLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.accumulatedMileage, jdbcType=DOUBLE, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineDoubleTypeHandler},
+            #{row.networkForm, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+            #{row.createTime, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler}
+        )
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO ${subTableName} USING unmanned_car_status TAGS (#{vin, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler})
+        (ts, message_id, power_on_status, control_model, power_mode, charge_status, lamp_switch_status,
+         battery, current_fuel_level, current_battery_level, accumulated_mileage, network_form, create_time)
+        VALUES
+        <foreach collection="rows" item="row" separator=",">
+            (
+                #{row.ts, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler},
+                #{row.messageId, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler},
+                #{row.powerOnStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.controlModel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.powerMode, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.chargeStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.lampSwitchStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.battery, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.currentFuelLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.currentBatteryLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.accumulatedMileage, jdbcType=DOUBLE, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineDoubleTypeHandler},
+                #{row.networkForm, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                #{row.createTime, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertMultiTableBatch">
+        INSERT INTO
+        <foreach collection="groups" item="group" separator=" ">
+            ${group.subTableName} USING unmanned_car_status TAGS (#{group.vin, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler})
+            (ts, message_id, power_on_status, control_model, power_mode, charge_status, lamp_switch_status,
+             battery, current_fuel_level, current_battery_level, accumulated_mileage, network_form, create_time)
+            VALUES
+            <foreach collection="group.rows" item="row" separator=",">
+                (
+                    #{row.ts, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler},
+                    #{row.messageId, jdbcType=VARCHAR, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineNcharTypeHandler},
+                    #{row.powerOnStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.controlModel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.powerMode, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.chargeStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.lampSwitchStatus, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.battery, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.currentFuelLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.currentBatteryLevel, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.accumulatedMileage, jdbcType=DOUBLE, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineDoubleTypeHandler},
+                    #{row.networkForm, jdbcType=INTEGER, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTinyintUnsignedTypeHandler},
+                    #{row.createTime, jdbcType=TIMESTAMP, typeHandler=com.huaweisoft.jdi2.service.handler.tdengine.TdengineTimestampTypeHandler}
+                )
+            </foreach>
+        </foreach>
+    </insert>
+
+</mapper>
