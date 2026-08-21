@@ -13,6 +13,11 @@
     <artifactId>mybatis-plus-tdengine</artifactId>
     <version>0.0.1.snapshot</version>
 
+    <properties>
+        <!-- 默认跳过测试；IDE / 命令行可用 -DskipTests=false 覆盖 -->
+        <skipTests>true</skipTests>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -43,21 +48,22 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.23</version>
         </dependency>
-        <!-- 数据库 -->
+        <!-- 数据库：Spring Boot 3.x 必须用 spring-boot3-starter，否则 mybatis-spring 2.x 会触发 factoryBeanObjectType=String 启动失败 -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>3.5.17</version>
         </dependency>
+        <!-- JDK 11+ / Spring Boot 3 使用 jsqlparser 模块（非 jsqlparser-4.9） -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
             <version>3.5.17</version>
         </dependency>
         <dependency>
             <groupId>com.github.yulichang</groupId>
             <artifactId>mybatis-plus-join-boot-starter</artifactId>
-            <version>1.5.4</version>
+            <version>1.5.9</version>
         </dependency>
         <dependency>
             <groupId>com.taosdata.jdbc</groupId>
@@ -103,7 +109,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skipTests>${skipTests}</skipTests>
                 </configuration>
             </plugin>
         </plugins>

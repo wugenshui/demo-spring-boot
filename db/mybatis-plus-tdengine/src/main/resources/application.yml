@@ -3,14 +3,31 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis-plus-mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    # WebSocket 连接（taos-jdbcdriver 3.4+ 推荐）；无需安装本地 taosc
+    driver-class-name: com.taosdata.jdbc.ws.WebSocketDriver
+    # 库名与 src/sql/init.sql 中 CREATE DATABASE car_dev 对齐；默认账号 root / taosdata
+    url: jdbc:TAOS-WS://192.168.8.32:6041/unmanned_dev?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC
     username: root
-    password: root
+    password: taosdata
+    hikari:
+      # TDengine 探活；避免 Hikari 用 JDBC 默认校验导致误判连接不可用
+      connection-test-query: SELECT SERVER_STATUS()
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 10000
 
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 显式声明方言，避免 MP 按 JDBC URL 误判
+      db-type: tdengine
 
 # 打印执行sql日志
 logging:

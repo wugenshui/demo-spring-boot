@@ -1,9 +1,9 @@
 -- 创建数据库及设置过期策略
-CREATE DATABASE IF NOT EXISTS car_dev
+CREATE DATABASE IF NOT EXISTS unmanned_dev
 KEEP 90
 DURATION 10d
 
-USE car_dev;
+USE unmanned_dev;
 
 CREATE STABLE IF NOT EXISTS unmanned_car_status (
     ts                  TIMESTAMP,--车辆上报时间戳

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.huaweisoft.jdi2.service.module.unmanned.mapper.UnmannedCarStatusMapper">
+<mapper namespace="com.mybatis.plus.tdengine.mapper.UnmannedCarStatusMapper">
 
 
-    <select id="selectLatest" resultType="com.huaweisoft.jdi2.service.module.unmanned.entity.UnmannedCarStatusDo">
+    <select id="selectLatest" resultType="com.mybatis.plus.tdengine.entity.UnmannedCarStatusDo">
         SELECT
             LAST(ts) AS ts,
             vin,
@@ -21,7 +21,7 @@
         GROUP BY vin
     </select>
 
-    <select id="selectListStatus" resultType="com.huaweisoft.jdi2.service.module.unmanned.entity.UnmannedCarStatusDo">
+    <select id="selectListStatus" resultType="com.mybatis.plus.tdengine.entity.UnmannedCarStatusDo">
         SELECT
             LAST(ts) AS ts,
             vin,
