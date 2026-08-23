@@ -1,7 +1,7 @@
 -- 创建数据库及设置过期策略
 CREATE DATABASE IF NOT EXISTS unmanned_dev
 KEEP 90
-DURATION 10d
+DURATION 10d;
 
 USE unmanned_dev;
 
@@ -62,5 +62,3 @@ CREATE STABLE unmanned_car_performance (
 TAGS (
     vin VARCHAR(50) -- 车辆识别代号（分区标签）
 ) COMMENT '无人车性能数据表';
-
--- 8.19 已执行20楼环境
