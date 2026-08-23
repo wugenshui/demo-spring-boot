@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 无人车辆状态信息
@@ -79,7 +77,7 @@ public class UnmannedCarStatusDo {
     /**
      * 累计里程，有效值范围：0～9999999（表示0 km～999999.9km），最小计量单元：0.1 km。"0xFF，0xFF，0xFF，0xFE"：异常；"0xFF，0xFF，0xFF，0xFF"：无效
      */
-    private BigDecimal accumulatedMileage;
+    private Double accumulatedMileage;
 
     /**
      * 网络形态，每bit 代表不同的网络接入模式（1 代表可用状态，0 代表不可用）：1：LTE-V2X；2：5G NR-V2X；3：短距通信；4：其他；0xFE：异常；0xFF：无效
