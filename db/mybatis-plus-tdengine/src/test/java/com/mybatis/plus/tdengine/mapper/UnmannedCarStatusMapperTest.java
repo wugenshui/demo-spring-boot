@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @Slf4j
 @SpringBootTest
 class UnmannedCarStatusMapperTest {
@@ -21,6 +22,9 @@ class UnmannedCarStatusMapperTest {
         QueryWrapper<UnmannedCarStatusDo> queryWrapper = new QueryWrapper<>();
         List<UnmannedCarStatusDo> list = unmannedCarStatusMapper.selectList(queryWrapper);
         log.info(list.toString());
+
+        UnmannedCarStatusDo statusDo = new UnmannedCarStatusDo();
+        unmannedCarStatusMapper.insertRow("unmanned_car_status_" + statusDo.getVin(), statusDo);
     }
 
 }
