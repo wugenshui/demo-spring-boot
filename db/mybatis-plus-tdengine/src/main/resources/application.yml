@@ -6,7 +6,7 @@ spring:
     # WebSocket 连接（taos-jdbcdriver 3.4+ 推荐）；无需安装本地 taosc
     driver-class-name: com.taosdata.jdbc.rs.RestfulDriver
     # 库名与 src/sql/init.sql 中 CREATE DATABASE car_dev 对齐；默认账号 root / taosdata
-    url: jdbc:TAOS-RS://192.168.3.86:6041/unmanned_dev?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC
+    url: jdbc:TAOS-RS://192.168.3.86:6041,192.168.3.86:6041/unmanned_dev?charset=UTF-8&locale=en_US.UTF-8&timezone=UTC
     username: root
     password: taosdata
     hikari:
