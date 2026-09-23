@@ -24,7 +24,7 @@
         <nacos-discovery-spring-boot.version>0.2.1</nacos-discovery-spring-boot.version>
         <alibaba-spring-context-support.version>1.0.2</alibaba-spring-context-support.version>
         <fastjson.version>1.2.66</fastjson.version>
-        <mysql.version>8.0.19</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <mybatis.version>2.1.1</mybatis.version>
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <tk.mybatis.version>2.1.5</tk.mybatis.version>
