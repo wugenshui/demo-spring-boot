@@ -32,7 +32,7 @@
         <p6spy.version>3.8.1</p6spy.version>
         <redisson.version>3.13.0</redisson.version>
         <elasticsearch.version>7.1.1</elasticsearch.version>
-        <graphql-java.version>15.0</graphql-java.version>
+        <graphql-java.version>17.4</graphql-java.version>
         <jwt.version>3.4.0</jwt.version>
         <swagger.version>2.9.2</swagger.version>
         <poi.version>4.1.2</poi.version>
